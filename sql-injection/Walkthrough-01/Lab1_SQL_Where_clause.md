@@ -1,71 +1,57 @@
 The website is using this query in the backend when you choose a product category like "Gifts":
 
-sql
-Copy
-Edit
+```
 SELECT * FROM products WHERE category = 'Gifts' AND released = 1
-This means:
+```
+This means: `Show only products` where: The category is  `Gifts` AND the released flag is 1 `(which means it's public/visible)`
 
-Show only products where:
+- Your goal:
+-- 👉 Trick this query to also show unreleased products (those with released = 0), using SQL Injection.
 
-The category is 'Gifts'
+# 🧪 Step-by-Step Explanation
 
-AND the released flag is 1 (which means it's public/visible)
+## 🔍 Step 1: Find where to inject
 
-Your goal:
-👉 Trick this query to also show unreleased products (those with released = 0), using SQL Injection.
-
-🧪 Step-by-Step Explanation
-🔍 Step 1: Find where to inject
-You go to the product page and see categories like Gifts, Accessories, etc.
-When you click on a category, it probably sends something like this in the URL:
-
-arduino
-Copy
-Edit
+On the website, you might see a URL like this when you click a product category:
+```
 https://example.com/filter?category=Gifts
-So, category=Gifts is being used in the SQL query.
+```
+![Website](/sql-injection/Screenshots/1.sql.png)
 
-🧨 Step 2: Inject the payload
-Now let’s use this input instead of just "Gifts":
+- This means the website is likely running a query like:
 
-vbnet
-Copy
-Edit
-Gifts' OR 1=1--
-Which makes the full query become:
+```
+sql: SELECT * FROM products WHERE category = 'Gifts' AND released = 1;
+```
 
-sql
-Copy
-Edit
-SELECT * FROM products WHERE category = 'Gifts' OR 1=1--' AND released = 1
-🔍 What Just Happened?
-Let’s understand this in human terms:
+![Website](/sql-injection/Screenshots/2.sql.png)
 
-' → closes the original 'Gifts'
 
-OR 1=1 → always true condition, so it matches all products
+## 🧨 Step 2: Inject the Payload
 
--- → comment, which tells SQL to ignore the rest (AND released = 1 is skipped)
+- Now, try replacing Gifts in the URL with this input:
 
-So the query becomes:
+```
+1' OR 1=1--
+```
+- What are we doing here?
 
-sql
-Copy
-Edit
-SELECT * FROM products WHERE category = 'Gifts' OR 1=1
-✅ Boom! Now the database shows all products, including unreleased ones, because we bypassed the released = 1 filter.
+  - `1'`  This closes the original input value in the SQL query.
 
-💡 Final Input (URL)
-So your final test URL would look like this:
+  - `OR 1=1 ` This is a logical condition that is always true. It says: “If the first part fails, just show everything where 1 equals 1 (which is always true).”
 
-arduino
-Copy
-Edit
-https://example.com/filter?category=Gifts'+OR+1=1--
-Or enter Gifts' OR 1=1-- in the category filter field (if it's in a form).
+  - `--` This is a SQL comment operator. It tells the database to ignore the rest of the query that might cause errors or prevent the injection from working (like AND released = 1).
 
-✅ Result
-Once you do that, you should see hidden/unreleased products, which means:
+![Website](/sql-injection/Screenshots/3.sql.png)
 
-🎉 Lab Solved!
+- Execue the payload.
+  
+![Website](/sql-injection/Screenshots/4.sql.png)
+
+- We can see all the data i.e. the Gifts present which shows that it is vulnerable to sql injection.
+  
+![Website](/sql-injection/Screenshots/5.sql.png)
+
+---
+
+### BOOM !! LAB SOLVED !!......
