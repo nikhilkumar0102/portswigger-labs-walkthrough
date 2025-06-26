@@ -178,4 +178,7 @@ We remove the value 'Gifts' and instead inject a payload such as:
 
 - At this point, the lab detects success as we have correctly determined and matched the number of columns, completing the objective.
 
+![Website](/sql-injection/Screenshots/1.1.12sql.png)
+
+
 
