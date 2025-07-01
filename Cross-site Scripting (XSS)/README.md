@@ -1,85 +1,113 @@
-Cross-Site Scripting (XSS) - Simple Explanation
-XSS is a security bug that lets hackers inject malicious scripts into websites. When other users visit the infected page, the script runs in their browser, stealing data or doing harmful actions.
+# Cross-Site Scripting (XSS)
 
-How XSS Happens (With Examples)
-1. Stored XSS (Permanent Attack)
-Malicious script is saved on the website (like in a comment or forum post).
+- XSS is a security bug that lets hackers inject malicious scripts into websites. When other users visit the infected page, the script runs in their browser, stealing data or doing harmful actions.
 
-Every visitor who sees the infected content gets hacked.
+## How XSS Happens (With Examples)
+### 1. Stored XSS (Permanent Attack)
+- Malicious script is saved on the website (like in a comment or forum post).
+- Every visitor who sees the infected content gets hacked.
 
-Example:
+#### Example:
 
-A hacker posts this in a comment:
+- A hacker posts this in a comment:
 
-html
+```
 <script>alert("You've been hacked!")</script>
-Now, every user who loads the page sees an alert.
+```
 
-2. Reflected XSS (Temporary Attack)
-The attack is hidden in a URL or input field.
+- Now, every user who loads the page sees an alert.
 
-Only works if the victim clicks a bad link.
+### 2. Reflected XSS (Temporary Attack)
+- The attack is hidden in a URL or input field.
 
-Example:
+- Only works if the victim clicks a bad link.
 
-A phishing email contains:
+#### Example:
 
-url
+- A phishing email contains:
+
+```
 https://example.com/search?q=<script>stealCookies()</script>
-If you click it, the script runs and steals your login cookies.
+```
 
-3. DOM-based XSS (No Server Needed)
-The attack happens inside the browser (no server storage).
+-If you click it, the script runs and steals your login cookies.
 
-Example: A website takes a URL parameter and displays it without safety checks.
+### 3. DOM-based XSS (No Server Needed)
+- The attack happens inside the browser (no server storage).
 
-Example:
+- Example: A website takes a URL parameter and displays it without safety checks.
 
-Bad URL:
+#### Example:
 
-url
+- Bad URL:
+
+```
 https://example.com#<script>alert('XSS')</script>
-If the website uses document.location.hash unsafely, the script runs.
+```
 
-What Can Hackers Do with XSS?
+- If the website uses document.location.hash unsafely, the script runs.
+
+## What Can Hackers Do with XSS?
+
 ✔ Steal cookies → Hack your accounts.
+
 ✔ Log keystrokes → Capture passwords.
+
 ✔ Redirect users → Send you to fake login pages.
+
 ✔ Deface websites → Show fake messages.
 
-How to Stop XSS?
-1. Escape User Input
-Before showing user content, encode special characters (<, >, ", ').
+## How to Stop XSS?
 
-Example (PHP):
+#### 1. Escape User Input
 
-php
+Before showing user content, encode special characters `(<, >, ", ')`.
+
+#### Example (PHP):
+
+```
 echo htmlspecialchars($user_input, ENT_QUOTES, 'UTF-8');
-2. Use Security Headers
-Add Content Security Policy (CSP) to block unsafe scripts:
+```
 
-http
-Content-Security-Policy: script-src 'self';
-3. Sanitize HTML
+#### 2. Use Security Headers
+
+Add Content Security Policy (CSP) to block unsafe scripts:
+```
+ Content-Security-Policy: script-src 'self';
+```
+
+#### 3. Sanitize HTML
+
 Use libraries like DOMPurify (JavaScript) to clean inputs:
 
 javascript
+```
 const clean = DOMPurify.sanitize(userInput);
-4. Secure Cookies
+```
+
+#### 4. Secure Cookies
 Mark cookies as HttpOnly so JavaScript can’t read them:
 
 http
+```
 Set-Cookie: sessionId=123; HttpOnly; Secure
-Test for XSS
+```
+
+## Test for XSS
+
 Try harmless payloads like:
 
-html
+```
 <script>alert(1)</script>
-If an alert pops up, your site is vulnerable!
+```
 
-Stay Safe!
+- If an alert pops up, your site is vulnerable!
+
+## Stay Safe!
+
 ✅ Never trust user input.
+
 ✅ Always sanitize & escape data.
+
 ✅ Use security headers.
 
-🔗 Learn More: OWASP XSS Guide
